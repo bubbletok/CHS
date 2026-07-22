@@ -14,7 +14,7 @@ export default function Home() {
       </div>
 
       <section className="max-w-5xl mx-auto px-6 pt-16 pb-24">
-        <BootSequence name="이름을 적어주세요" title="Game Programmer — Unity & Unreal" />
+        <BootSequence name="최홍송" title="Game Programmer — Unity & Unreal" />
       </section>
 
       <section id="builds" className="max-w-5xl mx-auto px-6 pb-24">
@@ -32,9 +32,9 @@ export default function Home() {
 
       <footer className="max-w-5xl mx-auto px-6 pb-16">
         <div className="border-t border-line pt-8 font-mono text-sm text-muted space-y-2">
-          <p className="caret">&gt; contact --email your@email.com</p>
-          <p>&gt; contact --github github.com/yourname</p>
-          <p>&gt; contact --resume /resume.pdf</p>
+          <p className="caret">&gt; contact --email ghdthd1230@email.com</p>
+          <p>&gt; contact --github github.com/bubbletok123</p>
+          <p>&gt; contact --resume /resume_chs.pdf</p>
         </div>
       </footer>
     </main>
