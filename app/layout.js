@@ -1,7 +1,7 @@
 import './globals.css'
 
 export const metadata = {
-  title: '이름 — 게임 프로그래머',
+  title: 'Do, Whatever',
   description: 'Unity & Unreal 게임 프로그래머 포트폴리오',
 }
 

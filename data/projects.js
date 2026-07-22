@@ -15,6 +15,13 @@ export const projects = [
     problem:
       '겪었던 기술적 문제와 그걸 어떻게 풀었는지 2~4문장으로 설명하세요. 채용 담당자가 가장 유심히 보는 부분입니다.',
     stack: ['Unreal 5', 'Blueprint', 'Behaviour Tree'],
+    images: [
+      '/Projects/FallenKnight/Fallen_Knight_Poster_.png',
+      '/Projects/FallenKnight/FallenKnight_Ingame1.jpg',
+      '/Projects/FallenKnight/FallenKnight_Ingame2.jpg',
+      '/Projects/FallenKnight/FallenKnight_Ingame3.jpg',
+      '/Projects/FallenKnight/FallenKnight_Ingame4.jpg',
+    ],
     links: {
       video: '',
     },

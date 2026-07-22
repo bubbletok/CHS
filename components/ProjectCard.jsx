@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 const ENGINE_STYLE = {
   unity: { label: 'UNITY', color: 'text-unity', border: 'border-unity/40', dot: 'bg-unity' },
   unreal: { label: 'UNREAL', color: 'text-unreal', border: 'border-unreal/40', dot: 'bg-unreal' },
@@ -33,6 +35,22 @@ export default function ProjectCard({ project }) {
       </summary>
 
       <div className="px-4 sm:px-6 pb-6 pt-1 border-t border-line/60 space-y-4">
+        {project.images?.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4">
+            {project.images.map((src) => (
+              <div key={src} className="relative aspect-video rounded overflow-hidden border border-line">
+                <Image
+                  src={src}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 640px) 50vw, 25vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
         <p className="text-sm text-muted font-mono">{project.role}</p>
         <p className="text-ink/90 leading-relaxed">{project.summary}</p>
 
