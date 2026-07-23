@@ -1,6 +1,10 @@
 import BootSequence from '@/components/BootSequence'
 import FrameGraph from '@/components/FrameGraph'
 import ProjectCard from '@/components/ProjectCard'
+import Differentiators from '@/components/Differentiators'
+import ExperienceLog from '@/components/ExperienceLog'
+import EngineSkills from '@/components/EngineSkills'
+import AchievementsLog from '@/components/AchievementsLog'
 import { projects } from '@/data/projects'
 
 export default function Home() {
@@ -17,6 +21,10 @@ export default function Home() {
         <BootSequence name="최홍송" title="Game Programmer — Unity & Unreal" />
       </section>
 
+      <Differentiators />
+
+      <ExperienceLog />
+
       <section id="builds" className="max-w-5xl mx-auto px-6 pb-24">
         <div className="flex items-baseline justify-between mb-6 border-b border-line pb-3">
           <h2 className="font-mono text-sm text-muted tracking-widest">BUILD LOG</h2>
@@ -29,6 +37,10 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <EngineSkills />
+
+      <AchievementsLog />
 
       <footer className="max-w-5xl mx-auto px-6 pb-16">
         <div className="border-t border-line pt-8 font-mono text-sm text-muted space-y-2">
