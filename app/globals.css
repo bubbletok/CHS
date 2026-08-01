@@ -2,51 +2,174 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
-}
+@layer base {
+  /* ── 라이트 (기본) ───────────────────────────────────────── */
+  :root {
+    --c-bg: 255 255 255;
+    --c-subtle: 250 250 250;
+    --c-card: 255 255 255;
+    --c-line: 232 232 232;
 
-html {
-  scroll-behavior: smooth;
-}
+    --c-ink: 17 17 17;
+    --c-muted: 102 102 102;
+    --c-faint: 142 142 142;
 
-body {
-  background: #0B0D10;
-  background-image:
-    radial-gradient(circle at 20% -10%, rgba(159, 211, 86, 0.05), transparent 40%),
-    radial-gradient(circle at 90% 0%, rgba(79, 168, 224, 0.05), transparent 40%);
-}
+    /* 파스텔 틴트 위에서도 AA를 넘도록 액센트는 충분히 어둡게 잡는다.
+       (틴트 위 4.8~5.5 : 1, 솔리드 위 흰 글자 5.6~6.6 : 1) */
+    --c-blue: 21 88 190;
+    --c-orange: 166 79 6;
+    --c-green: 8 110 84;
+    --c-red: 178 42 45;
 
-::selection {
-  background: #9FD356;
-  color: #0B0D10;
-}
+    /* 파스텔 블록 */
+    --t-blue: 220 235 255;
+    --t-orange: 255 235 214;
+    --t-green: 214 244 233;
+    --t-red: 255 226 226;
 
-/* visible keyboard focus everywhere */
-a:focus-visible,
-button:focus-visible,
-summary:focus-visible {
-  outline: 2px solid #9FD356;
-  outline-offset: 3px;
-  border-radius: 2px;
-}
+    --c-contrast: 26 26 26;
+    --c-contrast-ink: 250 250 250;
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    --c-shadow: 0 0 0;
+
+    color-scheme: light;
+  }
+
+  /* ── 다크 ───────────────────────────────────────────────── */
+  [data-theme='dark'] {
+    --c-bg: 16 17 20;
+    --c-subtle: 22 24 28;
+    --c-card: 26 28 33;
+    --c-line: 45 48 55;
+
+    --c-ink: 240 242 246;
+    --c-muted: 160 166 176;
+    --c-faint: 124 130 141;
+
+    /* 어두운 배경에서 눌리지 않도록 한 단계 밝게 */
+    --c-blue: 106 170 255;
+    --c-orange: 255 165 82;
+    --c-green: 52 205 160;
+    --c-red: 255 124 124;
+
+    /* 파스텔 대신 깊게 가라앉은 틴트 */
+    --t-blue: 21 40 66;
+    --t-orange: 58 39 18;
+    --t-green: 15 46 38;
+    --t-red: 60 28 30;
+
+    --c-contrast: 240 242 246;
+    --c-contrast-ink: 16 17 20;
+
+    --c-shadow: 0 0 0;
+
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg text-ink;
+    overflow-x: hidden;
+    /* 테마 전환이 뚝 끊기지 않도록 */
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  ::selection {
+    background: rgb(var(--c-blue) / 0.2);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-blue));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--c-subtle));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--c-line));
+    border: 3px solid rgb(var(--c-subtle));
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--c-faint));
   }
 }
 
-@keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+@layer components {
+  /* 기본 카드 — 넓고 부드러운 그림자, 큰 라운드 */
+  .card {
+    @apply rounded-3xl border border-line bg-card shadow-soft;
+  }
+
+  /* 파스텔 블록 — 히어로·강조 구역 */
+  .block-tint {
+    @apply rounded-4xl;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-subtle px-3 py-1.5 text-[13px] font-medium text-muted;
+  }
+
+  /* 주 버튼 */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200;
+  }
+  .btn-primary {
+    @apply btn bg-brand text-white shadow-soft hover:-translate-y-0.5 hover:shadow-lift;
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-card text-ink hover:-translate-y-0.5 hover:shadow-soft;
+  }
+
+  /* 섹션 상단의 작은 라벨 */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold tracking-wide;
+  }
 }
-.caret::after {
-  content: '_';
-  animation: blink 1s step-start infinite;
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal[data-visible='true'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Playfair Display를 쓰는 강조 어구 */
+  .accent-serif {
+    @apply font-serif italic font-medium;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

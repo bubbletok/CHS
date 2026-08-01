@@ -1,54 +1,30 @@
-import BootSequence from '@/components/BootSequence'
-import FrameGraph from '@/components/FrameGraph'
-import ProjectCard from '@/components/ProjectCard'
-import Differentiators from '@/components/Differentiators'
-import ExperienceLog from '@/components/ExperienceLog'
-import EngineSkills from '@/components/EngineSkills'
-import AchievementsLog from '@/components/AchievementsLog'
-import { projects } from '@/data/projects'
+import Nav from '@/components/ui/Nav'
+import Hero from '@/components/ui/Hero'
+import Work from '@/components/ui/Work'
+import Skills from '@/components/ui/Skills'
+import Projects from '@/components/ui/Projects'
+import Achievements from '@/components/ui/Achievements'
+import Footer from '@/components/ui/Footer'
 
 export default function Home() {
   return (
-    <main>
-      {/* 프로파일러 스트립: 페이지 전체에 고정, 시그니처 요소 */}
-      <div className="sticky top-0 z-10 bg-bg/90 backdrop-blur border-b border-line">
-        <div className="max-w-5xl mx-auto px-6">
-          <FrameGraph />
+    <>
+      <Nav />
+
+      <main>
+        <Hero />
+        <Work />
+        {/* 섹션이 이어질 때 리듬이 생기도록 배경을 한 번 눌러 준다 */}
+        <div className="bg-subtle">
+          <Skills />
         </div>
-      </div>
-
-      <section className="max-w-5xl mx-auto px-6 pt-16 pb-24">
-        <BootSequence name="최홍송" title="Game Programmer — Unity & Unreal" />
-      </section>
-
-      <Differentiators />
-
-      <ExperienceLog />
-
-      <section id="builds" className="max-w-5xl mx-auto px-6 pb-24">
-        <div className="flex items-baseline justify-between mb-6 border-b border-line pb-3">
-          <h2 className="font-mono text-sm text-muted tracking-widest">BUILD LOG</h2>
-          <span className="font-mono text-xs text-muted">{projects.length} entries</span>
+        <Projects />
+        <div className="bg-subtle">
+          <Achievements />
         </div>
+      </main>
 
-        <div className="space-y-3">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-      </section>
-
-      <EngineSkills />
-
-      <AchievementsLog />
-
-      <footer className="max-w-5xl mx-auto px-6 pb-16">
-        <div className="border-t border-line pt-8 font-mono text-sm text-muted space-y-2">
-          <p className="caret">&gt; contact --email ghdthd1230@email.com</p>
-          <p>&gt; contact --github github.com/bubbletok123</p>
-          <p>&gt; contact --resume /resume_chs.pdf</p>
-        </div>
-      </footer>
-    </main>
+      <Footer />
+    </>
   )
 }
