@@ -1,16 +1,11 @@
-import Section from './Section'
-import Reveal from './Reveal'
+import Section from '@/components/ui/Section'
+import Reveal from '@/components/ui/Reveal'
 import { engines, familiar } from '@/data/skills'
 import { ACCENT } from '@/lib/accents'
 
 export default function Skills() {
   return (
-    <Section
-      id="skills"
-      eyebrow="Skills"
-      title="기술 스택"
-      accent="orange"
-    >
+    <Section id="skills" index={3} total={4} eyebrow="Skills" title="기술 스택" accent="orange">
       <div className="grid gap-5 md:grid-cols-2">
         {engines.map((col, i) => {
           const a = ACCENT[col.accent]
@@ -25,7 +20,6 @@ export default function Skills() {
                 <ul className="mt-6 space-y-2">
                   {col.items.map((item) =>
                     item.key ? (
-                      // 주력 기술 — 틴트 배경으로 채워 한눈에 들어오게
                       <li
                         key={item.name}
                         className={`flex items-start gap-3 rounded-2xl ${a.tint} px-4 py-3`}

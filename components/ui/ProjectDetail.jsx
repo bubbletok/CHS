@@ -8,6 +8,7 @@ const STATUS = {
   playable: { label: 'PLAYABLE', accent: 'green' },
   video: { label: 'VIDEO', accent: 'blue' },
   wip: { label: 'IN PROGRESS', accent: 'orange' },
+  company: { label: 'PROFESSIONAL', accent: 'blue' },
 }
 
 const LINK_LABEL = { play: 'Google Play', github: 'GitHub', video: '영상 보기' }

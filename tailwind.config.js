@@ -1,14 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 //
-// 색은 전부 CSS 변수를 통해 정의한다. :root 와 [data-theme="dark"] 에서
-// 변수만 갈아끼우면 라이트/다크가 동시에 대응된다. (app/globals.css 참고)
+// 색은 전부 CSS 변수를 통해 정의한다. :root 하나만 존재하는
+// 단일 다크 에디토리얼 팔레트다 (app/globals.css 참고, 라이트 모드 없음).
+// daoism.systems 참고: 순검정에 가까운 차콜 + 블루그레이 텍스트 + 절제된 러스트레드 액센트.
 //
 // lib/accents.js가 완성된 클래스 문자열(bg-brand, text-violet 등)을 들고 있으므로
 // content 글로브에서 lib을 빼면 액센트 클래스가 전부 purge된다. 반드시 포함할 것.
 const v = (name) => `rgb(var(${name}) / <alpha-value>)`
 
 module.exports = {
-  darkMode: ['class', '[data-theme="dark"]'],
   content: [
     './app/**/*.{js,jsx}',
     './components/**/*.{js,jsx}',
@@ -27,37 +27,38 @@ module.exports = {
         ink: v('--c-ink'),
         muted: v('--c-muted'),
         faint: v('--c-faint'),
-        // 액센트 — 파랑 · 주황 · 초록 · 빨강
+        // 액센트 — 파랑 · 주황 · 초록 · 빨강(러스트) — 전부 채도를 낮춘 에디토리얼 톤
         blue: v('--c-blue'),
         orange: v('--c-orange'),
         green: v('--c-green'),
         red: v('--c-red'),
-        brand: v('--c-blue'),
-        // 파스텔 블록 (히어로·칩 배경)
+        brand: v('--c-red'),
+        // 저채도 틴트 블록 (히어로·칩 배경)
         'tint-blue': v('--t-blue'),
         'tint-orange': v('--t-orange'),
         'tint-green': v('--t-green'),
         'tint-red': v('--t-red'),
-        // 대비용 다크 블록 (CTA)
+        // 대비용 다크 블록 (CTA/오버레이)
         contrast: v('--c-contrast'),
         'contrast-ink': v('--c-contrast-ink'),
       },
       fontFamily: {
-        sans: ['Inter', 'Noto Sans KR', 'system-ui', 'sans-serif'],
-        serif: ['Playfair Display', 'Noto Serif KR', 'serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        // 헤드라인은 개성 있는 지오메트릭 디스플레이, 라벨/UI는 IBM Plex Mono
+        sans: ['Space Grotesk', 'Noto Sans KR', 'system-ui', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'monospace'],
       },
       borderRadius: {
-        xl: '10px',
-        '2xl': '15px',
-        '3xl': '20px',
+        // trionn.com 참고 — 하드라인 대신 모더레이트 라운드 + 글래스 카드
+        xl: '14px',
+        '2xl': '18px',
+        '3xl': '22px',
         '4xl': '28px',
       },
       boxShadow: {
-        // Weekrise 특유의 넓고 부드러운 확산 그림자
-        soft: '0 0 25px 0 rgb(var(--c-shadow) / 0.12)',
-        lift: '0 8px 30px 0 rgb(var(--c-shadow) / 0.14)',
-        deep: '0 0 35px 0 rgb(var(--c-shadow) / 0.22)',
+        // 네온 글로우 대신 얕고 절제된 확산 그림자 — 입체감은 주로 hairline 보더가 담당한다
+        soft: '0 1px 0 0 rgb(var(--c-line)), 0 12px 24px -12px rgb(var(--c-shadow) / 0.5)',
+        lift: '0 1px 0 0 rgb(var(--c-line)), 0 20px 36px -16px rgb(var(--c-shadow) / 0.6)',
+        deep: '0 24px 48px -20px rgb(var(--c-shadow) / 0.7)',
       },
       maxWidth: {
         content: '1100px',
@@ -68,14 +69,14 @@ module.exports = {
           from: { opacity: '0', transform: 'translate3d(0, 20px, 0)' },
           to: { opacity: '1', transform: 'none' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-8px)' },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
         },
       },
       animation: {
         'fade-up': 'fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards',
-        float: 'float 6s ease-in-out infinite',
+        marquee: 'marquee 28s linear infinite',
       },
     },
   },

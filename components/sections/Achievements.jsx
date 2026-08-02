@@ -1,22 +1,21 @@
-import Section from './Section'
-import Reveal from './Reveal'
+import Section from '@/components/ui/Section'
+import Reveal from '@/components/ui/Reveal'
 import { achievementGroups } from '@/data/achievements'
 import { ACCENT } from '@/lib/accents'
 
 export default function Achievements() {
   return (
-    <Section
-      id="achievements"
-      eyebrow="Record"
-      title="활동 이력"
-      accent="red"
-    >
+    <Section id="achievements" index={4} total={4} eyebrow="Record" title="활동 이력" accent="red">
       <div className="grid gap-5 md:grid-cols-2">
         {achievementGroups.map((group, i) => {
           const a = ACCENT[group.accent]
           return (
             <Reveal key={group.key} delay={(i % 2) * 90} className="h-full">
-              <div className="card h-full p-7">
+              <div
+                className={`card h-full p-7 transition-transform duration-300 hover:-translate-y-1 hover:rotate-0 ${
+                  i % 2 === 0 ? '-rotate-1' : 'rotate-1'
+                }`}
+              >
                 <div className="flex items-center justify-between">
                   <span className={`eyebrow ${a.tint} ${a.text}`}>{group.label}</span>
                   <span className="text-sm font-bold text-faint">

@@ -1,17 +1,19 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import usePrefersReducedMotion from '@/lib/usePrefersReducedMotion'
 
 /** 뷰포트에 들어오면 한 번만 등장 애니메이션을 실행한다. */
 export default function Reveal({ children, delay = 0, className = '', as: Tag = 'div' }) {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
+  const reducedMotion = usePrefersReducedMotion()
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (reducedMotion) {
       setVisible(true)
       return
     }
@@ -28,7 +30,7 @@ export default function Reveal({ children, delay = 0, className = '', as: Tag = 
 
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [reducedMotion])
 
   return (
     <Tag

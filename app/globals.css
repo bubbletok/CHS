@@ -3,64 +3,33 @@
 @tailwind utilities;
 
 @layer base {
-  /* ── 라이트 (기본) ───────────────────────────────────────── */
+  /* ── 다크 에디토리얼 — daoism.systems 참고 (차콜 + 블루그레이 + 절제된 러스트레드) ── */
   :root {
-    --c-bg: 255 255 255;
-    --c-subtle: 250 250 250;
-    --c-card: 255 255 255;
-    --c-line: 232 232 232;
+    --c-bg: 10 11 13;
+    --c-subtle: 15 16 19;
+    --c-card: 19 20 24;
+    --c-line: 40 42 48;
 
-    --c-ink: 17 17 17;
-    --c-muted: 102 102 102;
-    --c-faint: 142 142 142;
+    --c-ink: 236 238 242;
+    --c-muted: 168 174 188;
+    --c-faint: 100 104 118;
 
-    /* 파스텔 틴트 위에서도 AA를 넘도록 액센트는 충분히 어둡게 잡는다.
-       (틴트 위 4.8~5.5 : 1, 솔리드 위 흰 글자 5.6~6.6 : 1) */
-    --c-blue: 21 88 190;
-    --c-orange: 166 79 6;
-    --c-green: 8 110 84;
-    --c-red: 178 42 45;
+    /* 저채도 액센트 — red가 사이트의 실제 시그니처 컬러(탁한 러스트), 나머지는 보조 */
+    --c-blue: 128 152 196;
+    --c-orange: 196 142 82;
+    --c-green: 118 172 142;
+    --c-red: 196 84 70;
 
-    /* 파스텔 블록 */
-    --t-blue: 220 235 255;
-    --t-orange: 255 235 214;
-    --t-green: 214 244 233;
-    --t-red: 255 226 226;
+    /* 어둡게 가라앉은 틴트 배경 */
+    --t-blue: 24 30 40;
+    --t-orange: 38 30 20;
+    --t-green: 20 34 28;
+    --t-red: 40 22 20;
 
-    --c-contrast: 26 26 26;
-    --c-contrast-ink: 250 250 250;
+    --c-contrast: 6 7 9;
+    --c-contrast-ink: 236 238 242;
 
-    --c-shadow: 0 0 0;
-
-    color-scheme: light;
-  }
-
-  /* ── 다크 ───────────────────────────────────────────────── */
-  [data-theme='dark'] {
-    --c-bg: 16 17 20;
-    --c-subtle: 22 24 28;
-    --c-card: 26 28 33;
-    --c-line: 45 48 55;
-
-    --c-ink: 240 242 246;
-    --c-muted: 160 166 176;
-    --c-faint: 124 130 141;
-
-    /* 어두운 배경에서 눌리지 않도록 한 단계 밝게 */
-    --c-blue: 106 170 255;
-    --c-orange: 255 165 82;
-    --c-green: 52 205 160;
-    --c-red: 255 124 124;
-
-    /* 파스텔 대신 깊게 가라앉은 틴트 */
-    --t-blue: 21 40 66;
-    --t-orange: 58 39 18;
-    --t-green: 15 46 38;
-    --t-red: 60 28 30;
-
-    --c-contrast: 240 242 246;
-    --c-contrast-ink: 16 17 20;
-
+    /* 확산 그림자는 순검정 — 입체감은 주로 hairline 보더가 담당한다 */
     --c-shadow: 0 0 0;
 
     color-scheme: dark;
@@ -74,32 +43,28 @@
   body {
     @apply bg-bg text-ink;
     overflow-x: hidden;
-    /* 테마 전환이 뚝 끊기지 않도록 */
-    transition:
-      background-color 0.25s ease,
-      color 0.25s ease;
   }
 
   ::selection {
-    background: rgb(var(--c-blue) / 0.2);
+    background: rgb(var(--c-red) / 0.3);
+    color: rgb(var(--c-ink));
   }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--c-blue));
+    outline: 2px solid rgb(var(--c-red));
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 1px;
   }
 
   ::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
   }
   ::-webkit-scrollbar-track {
     background: rgb(var(--c-subtle));
   }
   ::-webkit-scrollbar-thumb {
     background: rgb(var(--c-line));
-    border: 3px solid rgb(var(--c-subtle));
-    border-radius: 99px;
+    border: 2px solid rgb(var(--c-subtle));
   }
   ::-webkit-scrollbar-thumb:hover {
     background: rgb(var(--c-faint));
@@ -107,34 +72,61 @@
 }
 
 @layer components {
-  /* 기본 카드 — 넓고 부드러운 그림자, 큰 라운드 */
+  /* 글래스 카드 — 뒤에 흐르는 3D 배경이 은은히 비치도록 반투명 + 블러 */
   .card {
-    @apply rounded-3xl border border-line bg-card shadow-soft;
+    @apply rounded-3xl border border-line bg-card/80 shadow-soft backdrop-blur-xl;
   }
 
-  /* 파스텔 블록 — 히어로·강조 구역 */
   .block-tint {
-    @apply rounded-4xl;
+    @apply rounded-4xl border border-line;
   }
 
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-subtle px-3 py-1.5 text-[13px] font-medium text-muted;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-subtle px-3 py-1.5 font-mono text-[13px] font-medium tracking-wide text-muted;
   }
 
   /* 주 버튼 */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-mono text-sm font-semibold uppercase tracking-wide transition-all duration-200;
   }
   .btn-primary {
-    @apply btn bg-brand text-white shadow-soft hover:-translate-y-0.5 hover:shadow-lift;
+    @apply btn bg-brand text-contrast-ink shadow-soft hover:-translate-y-0.5 hover:shadow-lift;
   }
   .btn-ghost {
-    @apply btn border border-line bg-card text-ink hover:-translate-y-0.5 hover:shadow-soft;
+    @apply btn border border-line bg-card text-ink hover:-translate-y-0.5 hover:border-red;
   }
 
   /* 섹션 상단의 작은 라벨 */
   .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold tracking-wide;
+    @apply inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em];
+  }
+
+  /* 넘버링 섹션 인덱스 — "01 / 06" 식 라벨. daoism.systems의 섹션 넘버링 패턴 차용 */
+  .index-num {
+    @apply font-mono text-xs tracking-[0.2em] text-faint;
+  }
+
+  /* 은은한 마우스 추적 스포트라이트 — CursorSpotlight.jsx가 --spot-x/--spot-y를 갱신한다 */
+  .cursor-spotlight {
+    @apply pointer-events-none fixed inset-0 z-[1] opacity-0 transition-opacity duration-500;
+    background: radial-gradient(
+      560px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgb(var(--c-red) / 0.06),
+      transparent 70%
+    );
+  }
+
+  /* 미세한 필름 그레인 — 평면적인 "AI 톤"을 깨는 저비용 텍스처, WebGL 없이 순수 CSS */
+  .grain-overlay {
+    @apply pointer-events-none fixed inset-0 z-[2] opacity-[0.035];
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+
+  /* trionn.com 참고 — 무한 마퀴 티커의 좌우 가장자리를 페이드아웃 */
+  .marquee-fade {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   }
 }
 
@@ -151,9 +143,9 @@
     transform: none;
   }
 
-  /* Playfair Display를 쓰는 강조 어구 */
+  /* 강조 어구 — Space Grotesk는 정식 이탤릭이 없어 브라우저 합성 기울임을 쓴다 */
   .accent-serif {
-    @apply font-serif italic font-medium;
+    @apply italic font-medium;
   }
 }
 
