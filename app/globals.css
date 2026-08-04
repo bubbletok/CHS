@@ -3,31 +3,32 @@
 @tailwind utilities;
 
 @layer base {
-  /* ── 다크 에디토리얼 — daoism.systems 참고 (차콜 + 블루그레이 + 절제된 러스트레드) ── */
+  /* ── 피그마 와이어프레임 그대로 — 순검정 배경 + 흰 hairline 보더, 색 액센트 없는 흑백 미니멀 ── */
   :root {
-    --c-bg: 10 11 13;
-    --c-subtle: 15 16 19;
-    --c-card: 19 20 24;
-    --c-line: 40 42 48;
+    --c-bg: 0 0 0;
+    --c-subtle: 10 10 11;
+    --c-card: 0 0 0;
+    --c-line: 84 86 92;
 
-    --c-ink: 236 238 242;
-    --c-muted: 168 174 188;
-    --c-faint: 100 104 118;
+    --c-ink: 255 255 255;
+    --c-muted: 190 192 198;
+    --c-faint: 120 122 128;
 
-    /* 저채도 액센트 — red가 사이트의 실제 시그니처 컬러(탁한 러스트), 나머지는 보조 */
-    --c-blue: 128 152 196;
-    --c-orange: 196 142 82;
-    --c-green: 118 172 142;
-    --c-red: 196 84 70;
+    /* 색 액센트를 두지 않는다 — 4개 키 모두 흰색 하나로 수렴시켜, 기존 컴포넌트의
+       ACCENT 클래스(text-blue 등)를 건드리지 않고도 전체를 흑백으로 만든다 */
+    --c-blue: 255 255 255;
+    --c-orange: 255 255 255;
+    --c-green: 255 255 255;
+    --c-red: 255 255 255;
 
-    /* 어둡게 가라앉은 틴트 배경 */
-    --t-blue: 24 30 40;
-    --t-orange: 38 30 20;
-    --t-green: 20 34 28;
-    --t-red: 40 22 20;
+    /* 틴트 배경도 색 없이 아주 옅은 회색 박스로 */
+    --t-blue: 14 14 15;
+    --t-orange: 14 14 15;
+    --t-green: 14 14 15;
+    --t-red: 14 14 15;
 
-    --c-contrast: 6 7 9;
-    --c-contrast-ink: 236 238 242;
+    --c-contrast: 0 0 0;
+    --c-contrast-ink: 0 0 0;
 
     /* 확산 그림자는 순검정 — 입체감은 주로 hairline 보더가 담당한다 */
     --c-shadow: 0 0 0;
@@ -72,17 +73,9 @@
 }
 
 @layer components {
-  /* 글래스 카드 — 뒤에 흐르는 3D 배경이 은은히 비치도록 반투명 + 블러 */
+  /* 피그마 와이어프레임 그대로 — 순검정 배경에 hairline 흰 보더만 있는 평평한 박스 */
   .card {
-    @apply rounded-3xl border border-line bg-card/80 shadow-soft backdrop-blur-xl;
-  }
-
-  .block-tint {
-    @apply rounded-4xl border border-line;
-  }
-
-  .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-subtle px-3 py-1.5 font-mono text-[13px] font-medium tracking-wide text-muted;
+    @apply rounded-xl border border-line bg-card;
   }
 
   /* 주 버튼 */
@@ -123,11 +116,6 @@
     mix-blend-mode: overlay;
   }
 
-  /* trionn.com 참고 — 무한 마퀴 티커의 좌우 가장자리를 페이드아웃 */
-  .marquee-fade {
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
 }
 
 @layer utilities {
@@ -141,11 +129,6 @@
   .reveal[data-visible='true'] {
     opacity: 1;
     transform: none;
-  }
-
-  /* 강조 어구 — Space Grotesk는 정식 이탤릭이 없어 브라우저 합성 기울임을 쓴다 */
-  .accent-serif {
-    @apply italic font-medium;
   }
 }
 

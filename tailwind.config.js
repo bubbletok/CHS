@@ -1,11 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 //
 // 색은 전부 CSS 변수를 통해 정의한다. :root 하나만 존재하는
-// 단일 다크 에디토리얼 팔레트다 (app/globals.css 참고, 라이트 모드 없음).
-// daoism.systems 참고: 순검정에 가까운 차콜 + 블루그레이 텍스트 + 절제된 러스트레드 액센트.
-//
-// lib/accents.js가 완성된 클래스 문자열(bg-brand, text-violet 등)을 들고 있으므로
-// content 글로브에서 lib을 빼면 액센트 클래스가 전부 purge된다. 반드시 포함할 것.
+// 흑백 미니멀 팔레트다 (app/globals.css 참고, 피그마 와이어프레임 그대로 — 색 액센트 없음).
 const v = (name) => `rgb(var(${name}) / <alpha-value>)`
 
 module.exports = {
@@ -69,14 +65,9 @@ module.exports = {
           from: { opacity: '0', transform: 'translate3d(0, 20px, 0)' },
           to: { opacity: '1', transform: 'none' },
         },
-        marquee: {
-          from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(-50%)' },
-        },
       },
       animation: {
         'fade-up': 'fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards',
-        marquee: 'marquee 28s linear infinite',
       },
     },
   },

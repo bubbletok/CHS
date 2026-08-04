@@ -1,6 +1,7 @@
 import './globals.css'
 import CursorSpotlight from '@/components/effects/CursorSpotlight'
 import Loader from '@/components/effects/Loader'
+import Nav from '@/components/ui/Nav'
 
 export const metadata = {
   title: 'Do, Whatever',
@@ -32,7 +33,10 @@ export default function RootLayout({ children }) {
       <body className="font-sans antialiased">
         <CursorSpotlight />
         <div className="grain-overlay" aria-hidden="true" />
-        <div className="relative z-[1]">{children}</div>
+        <div className="relative z-[1]">
+          <Nav />
+          {children}
+        </div>
         <Loader />
       </body>
     </html>
