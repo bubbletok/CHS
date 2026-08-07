@@ -1,5 +1,5 @@
-import PlaceholderSection from '@/components/sections/PlaceholderSection'
+import StacksSection from '@/components/sections/StacksSection'
 
 export default function StacksPage() {
-  return <PlaceholderSection eyebrow="STACKS" title="Stacks" />
+  return <StacksSection />
 }

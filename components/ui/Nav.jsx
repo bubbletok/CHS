@@ -69,10 +69,6 @@ export default function Nav() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/about" className="btn-primary hidden !px-4 !py-2.5 text-xs sm:inline-flex">
-            연락하기
-          </Link>
-
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -117,10 +113,6 @@ export default function Nav() {
                 </li>
               ))}
             </ul>
-
-            <Link href="/about" onClick={() => setOpen(false)} className="btn-primary mt-8 w-full">
-              연락하기
-            </Link>
           </motion.div>
         )}
       </AnimatePresence>
