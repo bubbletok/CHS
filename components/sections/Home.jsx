@@ -3,18 +3,20 @@
 import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { SECTIONS } from '@/lib/nav'
+import { SAMPLE } from './ProjectsSection'
 
-const quickNav = SECTIONS.filter((s) => s.path !== '/home')
+/** 홈에서 먼저 보여줄 프로젝트 — Projects 화면의 샘플 목록을 그대로 쓴다 */
+const featured = SAMPLE.personal
 
-/** "기본 홈 화면" — 좌측 정렬 타이틀 + 우측 "See all projects" + 벤토 그리드(Projects는 크게, 나머지 3개는 작게).
- * 화면(뷰포트)을 최대한 꽉 채우는 하나의 큰 테두리 박스로 구성한다. hover한 칸은 grid-template을 조정해 최대로 확장된다. */
+/** "기본 홈 화면" — 좌측 정렬 타이틀 + 우측 "See all projects" + 프로젝트 카드 3장.
+ * 화면(뷰포트)을 최대한 꽉 채우는 하나의 큰 테두리 박스로 구성한다. hover한 카드는 grid-template을 조정해 최대로 확장된다.
+ * (섹션 링크는 상단 Nav가 이미 전부 갖고 있어 홈에서는 반복하지 않는다) */
 export default function Home() {
   const [hovered, setHovered] = useState(null)
   const leaveTimer = useRef(null)
 
-  // 다른 칸으로 곧장 넘어갈 때 잠깐 기본 상태로 되돌아갔다가 다시 커지는 끊김을 막기 위해,
-  // 벗어나자마자 null로 되돌리지 않고 짧게 지연시켜 다음 칸의 enter가 먼저 오면 취소한다.
+  // 다른 카드로 곧장 넘어갈 때 잠깐 기본 상태로 되돌아갔다가 다시 커지는 끊김을 막기 위해,
+  // 벗어나자마자 null로 되돌리지 않고 짧게 지연시켜 다음 카드의 enter가 먼저 오면 취소한다.
   const handleEnter = (i) => {
     clearTimeout(leaveTimer.current)
     setHovered(i)
@@ -23,9 +25,7 @@ export default function Home() {
     leaveTimer.current = setTimeout(() => setHovered(null), 80)
   }
 
-  const gridColumns = hovered === 0 ? '3fr 1fr' : hovered !== null ? '1fr 2fr' : '2fr 1fr'
-  const gridRows = ['1fr', '1fr', '1fr']
-  if (hovered !== null && hovered > 0) gridRows[hovered - 1] = '2fr'
+  const gridColumns = featured.map((_, i) => (i === hovered ? '2fr' : '1fr')).join(' ')
 
   return (
     <section id="home" className="flex h-[calc(100vh-4rem)] w-full flex-col overflow-hidden p-4 sm:p-6">
@@ -35,43 +35,35 @@ export default function Home() {
         transition={{ duration: 0.7 }}
         className="card flex w-full flex-1 flex-col p-8 sm:p-12"
       >
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-5xl">Hongsong Choi</h1>
-          <p className="mt-4 text-sm text-muted sm:text-base">Game Developer</p>
-          <p className="mt-1 font-mono text-xs text-faint sm:text-sm">Unity/Unreal, Client/Server, Infra, CI/CD</p>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-5xl">Hongsong Choi</h1>
+            <p className="mt-4 text-sm text-muted sm:text-base">Game Developer</p>
+            <p className="mt-1 font-mono text-xs text-faint sm:text-sm">Unity/Unreal, Client/Server, Infra, CI/CD</p>
+          </div>
+
+          <Link href="/projects" className="text-sm text-muted transition-colors hover:text-ink sm:text-base">
+            See all projects
+          </Link>
         </div>
 
-        <Link
-          href="/projects"
-          className="mt-10 self-end text-sm text-muted transition-colors hover:text-ink sm:text-base"
-        >
-          See all projects
-        </Link>
-
         <div
-          className="mt-4 grid flex-1 gap-3 transition-[grid-template-columns,grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:gap-4"
-          style={{ gridTemplateColumns: gridColumns, gridTemplateRows: gridRows.join(' ') }}
+          className="mt-10 grid flex-1 grid-cols-1 gap-3 transition-[grid-template-columns] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:gap-4 sm:[grid-template-columns:var(--cols)]"
+          style={{ '--cols': gridColumns }}
         >
-          <Link
-            href={quickNav[0].path}
-            onMouseEnter={() => handleEnter(0)}
-            onMouseLeave={handleLeave}
-            className="card row-span-3 flex flex-col justify-between overflow-hidden p-8 transition-colors hover:bg-subtle sm:p-12"
-          >
-            <span className="index-num">01</span>
-            <span className="text-3xl font-bold text-ink sm:text-6xl">{quickNav[0].gridLabel}</span>
-          </Link>
-
-          {quickNav.slice(1).map((s, i) => (
+          {featured.map((p, i) => (
             <Link
-              key={s.path}
-              href={s.path}
-              onMouseEnter={() => handleEnter(i + 1)}
+              key={p.id}
+              href="/projects"
+              onMouseEnter={() => handleEnter(i)}
               onMouseLeave={handleLeave}
-              className="card flex flex-col justify-between overflow-hidden p-5 transition-colors hover:bg-subtle sm:p-8"
+              className="card flex flex-col justify-between overflow-hidden p-6 transition-colors hover:bg-subtle sm:p-10"
             >
-              <span className="index-num">{String(i + 2).padStart(2, '0')}</span>
-              <span className="text-lg font-semibold text-ink sm:text-2xl">{s.gridLabel}</span>
+              <span className="index-num">{String(i + 1).padStart(2, '0')}</span>
+              <span>
+                <span className="block text-2xl font-bold text-ink sm:text-4xl">{p.title}</span>
+                <span className="mt-2 block text-xs text-faint sm:text-sm">Tech Stack / Duration</span>
+              </span>
             </Link>
           ))}
         </div>
