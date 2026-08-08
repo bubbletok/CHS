@@ -1,5 +1,5 @@
-import PlaceholderSection from '@/components/sections/PlaceholderSection'
+import ActivitiesSection from '@/components/sections/ActivitiesSection'
 
 export default function ActivitiesPage() {
-  return <PlaceholderSection eyebrow="ACTIVITIES" title="Activities" />
+  return <ActivitiesSection />
 }

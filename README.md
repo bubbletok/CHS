@@ -55,7 +55,7 @@ npm run dev
 | `data/skills.js` | 엔진별 기술 스택 |
 | `data/projects.js` | 프로젝트 (엔진 탭 + 프로젝트 탭 + 상세) |
 | `data/achievements.js` | 수상 · 활동 · 자격 · 전시 |
-| `data/experience.js` | ⚠️ 렌더링되지 않음. 경력기술서로 분리했고 내용 보존용으로만 남긴 파일 |
+| `data/experience.js` | 실무 경력 — Activities 화면의 "실무 경력" 트랙 |
 
 `accent` 필드에는 `blue` `coral` `violet` `green` `amber` 중 하나를 씁니다
 (`lib/accents.js`에 클래스 매핑이 있습니다).
@@ -64,7 +64,7 @@ npm run dev
 
 `Hero → What I have done → Skills → Projects → 쌓아온 기록 → Contact(CTA + 푸터)`
 
-경력(Experience)은 사이트에 두지 않고 별도 경력기술서로 관리합니다.
+경력(Experience)은 Activities 화면 상단 "실무 경력" 트랙에 둡니다.
 
 ### 프로젝트 스키마
 
