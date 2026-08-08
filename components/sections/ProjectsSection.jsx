@@ -94,7 +94,7 @@ function CardBody({ item }) {
       <span className="text-2xl font-bold tracking-tight text-ink sm:text-4xl">{item.title}</span>
       <div>
         <p className="text-sm text-faint sm:text-base">Tech Stack / Duration / etc.</p>
-        <p className="mt-8 text-3xl font-bold text-faint sm:text-5xl">Thumbnail</p>
+        <p className="mt-10 font-mono text-xs uppercase tracking-[0.2em] text-faint/70 sm:mt-14">Thumbnail</p>
         <p className="mt-4 text-xs text-faint sm:text-sm">클릭하면 프로젝트 세부 내용 창 뜨기</p>
       </div>
     </>
@@ -125,7 +125,7 @@ export default function ProjectsSection() {
       <div className="px-5 py-20 sm:hidden">
         <div className="mb-8 flex flex-col gap-4">
           <span className="eyebrow self-start">PROJECTS</span>
-          <h2 className="text-[36px] font-bold leading-[1.1] tracking-tight text-ink">Projects</h2>
+          <h2 className="display text-[44px]">Projects</h2>
         </div>
 
         <TabBar id="mobile" tab={tab} onTab={changeTab} engine={engine} onEngine={setEngine} />
@@ -147,7 +147,7 @@ export default function ProjectsSection() {
                     key={item.id}
                     type="button"
                     onClick={() => setActive(item)}
-                    className="card flex aspect-[3/2] w-full flex-col justify-between p-7 text-left"
+                    className="card shadow-soft flex aspect-[3/2] w-full flex-col justify-between p-7 text-left transition-shadow duration-300 hover:shadow-lift"
                   >
                     <CardBody item={item} />
                   </button>
@@ -163,7 +163,7 @@ export default function ProjectsSection() {
         <div className="sticky top-16 flex h-[calc(100vh-4rem)] w-full flex-col gap-6 px-8 py-8">
           <div className="flex flex-col gap-4">
             <span className="eyebrow self-start">PROJECTS</span>
-            <h2 className="text-[36px] font-bold leading-[1.1] tracking-tight text-ink sm:text-[52px]">Projects</h2>
+            <h2 className="display text-[44px] sm:text-[56px]">Projects</h2>
           </div>
 
           <TabBar id="desktop" tab={tab} onTab={changeTab} engine={engine} onEngine={setEngine} />
@@ -195,7 +195,7 @@ export default function ProjectsSection() {
                         key={item.id}
                         type="button"
                         onClick={() => setActive(item)}
-                        className="card flex h-full w-[min(860px,88vw)] shrink-0 flex-col justify-between p-10 text-left sm:p-14"
+                        className="card shadow-soft flex h-full w-[min(860px,88vw)] shrink-0 flex-col justify-between p-10 text-left transition-shadow duration-300 hover:shadow-lift sm:p-14"
                       >
                         <CardBody item={item} />
                       </button>
@@ -217,7 +217,7 @@ export default function ProjectsSection() {
           className="fixed inset-0 z-[55] flex items-center justify-center bg-bg/95 p-4 sm:p-8"
         >
           <div
-            className="card flex h-[85vh] w-full max-w-4xl flex-col p-8 sm:p-16"
+            className="card shadow-lift flex h-[85vh] w-full max-w-4xl flex-col p-8 sm:p-16"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-3xl font-bold text-ink sm:text-5xl">{active.title}</p>

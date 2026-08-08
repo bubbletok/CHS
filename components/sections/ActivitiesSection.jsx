@@ -12,21 +12,33 @@ const yearOf = (period) => period.match(/\d{4}/)?.[0] ?? ''
 const monthOf = (period) => period.match(/^\d{4}\.(\d{2})/)?.[1] ?? ''
 /** 'YYYY.MM' 딱 떨어지는 것만 월 두 자리로 줄이고, 기간·비정형 표기는 원문을 보여준다 */
 const labelOf = (period) => (/^\d{4}\.\d{2}$/.test(period) ? `${monthOf(period)}월` : period || '기록')
+/** 연도 구역 안에서는 헤더에 이미 연도가 있으니, 항목 라벨에서 같은 연도 숫자는 지운다 */
+const labelWithinYear = (period, year) => {
+  const stripped = period.replace(new RegExp(`${year}\\.(\\d{2})`, 'g'), '$1월')
+  return stripped === year ? '' : stripped || '기록'
+}
 
 /** 개인 활동 — 분류별로 나뉜 데이터를 한 줄기로 편다 */
 const records = achievementGroups.flatMap((g) =>
   g.items.map((item) => ({ ...item, tag: g.label, group: g.key, accent: g.accent, year: yearOf(item.period) || 'ETC' }))
 )
 
-/** 가로 축은 왼쪽이 과거 — 오래된 순으로 세운다. 연도 라벨은 그 해 첫 항목(=그 해 가장 이른 것)에만 찍는다 */
+/** 가로 축은 왼쪽이 과거 — 오래된 순으로 세운다 */
 const dated = records
   .filter((r) => r.year !== 'ETC')
   .sort((a, b) => (a.year + monthOf(a.period)).localeCompare(b.year + monthOf(b.period)))
-  .map((item, i, all) => ({ ...item, firstOfYear: item.year !== all[i - 1]?.year }))
 
 /** '1년 8개월'처럼 시점이 안 잡히는 건 축에 올릴 수 없으니 아래 ETC로 뺀다 */
 const etc = records.filter((r) => r.year === 'ETC')
 const yearSpan = [...new Set(dated.map((r) => r.year))]
+
+/** 연도별로 구역을 나눠서 보여준다 — 축을 연도마다 새로 그어 구분한다 */
+const yearGroups = dated.reduce((groups, item) => {
+  const g = groups.at(-1)
+  if (g?.year === item.year) g.items.push(item)
+  else groups.push({ year: item.year, items: [item] })
+  return groups
+}, [])
 
 /** 회사 블록 안에 role이 여러 개 묶여 있으니, 포지션 수는 role 합계로 센다 */
 const positionsCount = experience.reduce((n, c) => n + c.roles.length, 0)
@@ -149,8 +161,8 @@ function ExperienceTrack() {
   )
 }
 
-/** 개인 활동 — 2023~2025를 가로 선 하나에 한 번에 올린다.
- * 11개가 한 화면에 들어가야 하므로 항목을 축 위·아래로 번갈아 배치해 라벨이 겹치지 않게 한다.
+/** 개인 활동 — 연도별로 구역을 나누고, 구역 안에서는 가로 축 하나에 올린다.
+ * 항목을 축 위·아래로 번갈아 배치해 라벨이 겹치지 않게 한다.
  * 그 아래 ETC는 시점이 없어 축에 못 올리는 활동들. */
 function PersonalTrack() {
   // 클릭하면 세부 내용을 모달로 띄운다 — ProjectsSection의 상세 모달과 같은 패턴
@@ -165,59 +177,62 @@ function PersonalTrack() {
 
   return (
     <div>
-      {/* lg 미만은 폭이 모자라 한 번에 못 담으므로 가로 스크롤로 넘긴다 */}
+      {/* 연도 구역을 가로로 나란히 두고, 구역 사이는 세로선으로 끊는다. 전체가 옆으로 스크롤된다 */}
       <div className="overflow-x-auto pb-2">
-        <ol className="flex min-w-[64rem] lg:min-w-0">
-          {dated.map((r, i) => {
-            const above = i % 2 === 0
-            const open = active?.title === r.title
-            const card = (
-              <button
-                type="button"
-                onClick={() => setActive(r)}
-                aria-haspopup="dialog"
-                className="group w-full pr-4 text-left"
-              >
-                <span className="flex items-center gap-2">
-                  <Stamp group={r.group} accent={r.accent} title={r.title} />
-                  <span className="index-num truncate">{labelOf(r.period)}</span>
-                </span>
-                <p className="mt-1.5 flex items-baseline gap-1.5 text-sm font-semibold leading-snug text-ink">
-                  {r.title}
-                  {/* 클릭 가능 표시 — 상세가 있는 항목에만, 과하지 않게 옅은 + 기호로 */}
-                  {r.detail && (
-                    <span className="text-xs font-normal text-faint transition-colors group-hover:text-muted">+</span>
-                  )}
-                </p>
-              </button>
-            )
+        <div className="flex items-start">
+          {yearGroups.map((yg, gi) => (
+            <div key={yg.year} className={`shrink-0${gi > 0 ? ' ml-10 border-l border-line pl-10 sm:ml-14 sm:pl-14' : ''}`}>
+              <div className="mb-6 flex items-baseline gap-3">
+                <span className="text-3xl font-bold leading-none tracking-tight text-ink sm:text-4xl">{yg.year}</span>
+                <span className="index-num">{String(yg.items.length).padStart(2, '0')}</span>
+              </div>
 
-            return (
-              <li key={r.title} className="flex flex-1 flex-col">
-                {/* 연도 스트립 — 그 해 첫 항목에만 */}
-                <div className="flex h-14 items-end pb-2">
-                  {r.firstOfYear && (
-                    <span className="text-3xl font-bold leading-none tracking-tight text-faint sm:text-4xl">
-                      {r.year}
-                    </span>
-                  )}
-                </div>
+              <ol className="flex">
+                {yg.items.map((r, i) => {
+                  const above = i % 2 === 0
+                  const open = active?.title === r.title
+                  const card = (
+                    <button
+                      type="button"
+                      onClick={() => setActive(r)}
+                      aria-haspopup="dialog"
+                      className="group w-full pr-4 text-left"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Stamp group={r.group} accent={r.accent} title={r.title} />
+                        {labelWithinYear(r.period, yg.year) && (
+                          <span className="index-num truncate">{labelWithinYear(r.period, yg.year)}</span>
+                        )}
+                      </span>
+                      <p className="mt-1.5 flex items-baseline gap-1.5 text-sm font-semibold leading-snug text-ink">
+                        {r.title}
+                        {/* 클릭 가능 표시 — 상세가 있는 항목에만, 과하지 않게 옅은 + 기호로 */}
+                        {r.detail && (
+                          <span className="text-xs font-normal text-faint transition-colors group-hover:text-muted">+</span>
+                        )}
+                      </p>
+                    </button>
+                  )
 
-                <div className="flex h-32 flex-col justify-end pb-3">{above && card}</div>
+                  return (
+                    <li key={r.title} className="flex w-40 shrink-0 flex-col sm:w-48">
+                      <div className="flex h-32 flex-col justify-end pb-3">{above && card}</div>
 
-                {/* 축 — 연도가 바뀌는 칸만 굵은 선으로 끊는다 */}
-                <div className="relative">
-                  <div className={r.firstOfYear ? 'border-t-2 border-ink' : 'border-t border-line'} />
-                  <span
-                    className={`absolute -top-[3.5px] left-0 h-1.5 w-1.5 transition-colors duration-200 ${open ? 'bg-ink' : 'bg-faint'}`}
-                  />
-                </div>
+                      <div className="relative">
+                        <div className="border-t border-line" />
+                        <span
+                          className={`absolute -top-[3.5px] left-0 h-1.5 w-1.5 transition-colors duration-200 ${open ? 'bg-ink' : 'bg-faint'}`}
+                        />
+                      </div>
 
-                <div className="h-32 pt-3">{!above && card}</div>
-              </li>
-            )
-          })}
-        </ol>
+                      <div className="h-32 pt-3">{!above && card}</div>
+                    </li>
+                  )
+                })}
+              </ol>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* 상세 모달 — 반투명 배경 + 페이드/스케일로 자연스럽게 등장 */}
@@ -239,7 +254,7 @@ function PersonalTrack() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 8 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="card flex w-full max-w-2xl flex-col bg-card/20 p-8 backdrop-blur-md sm:p-14"
+              className="card shadow-lift flex w-full max-w-2xl flex-col bg-card/20 p-8 backdrop-blur-md sm:p-14"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center gap-4">
@@ -293,9 +308,7 @@ export default function ActivitiesSection() {
     <section className="w-full px-5 pb-28 pt-14 sm:px-8 sm:pt-20 lg:px-14">
       <header className="border-b border-line pb-10">
         <span className="eyebrow">ACTIVITIES</span>
-        <h2 className="mt-5 text-[44px] font-bold leading-[0.95] tracking-tight text-ink sm:text-[72px] lg:text-[96px]">
-          Activities
-        </h2>
+        <h2 className="display mt-5 text-[44px] sm:text-[72px] lg:text-[96px]">Activities</h2>
         <p className="mt-6 font-mono text-xs tracking-[0.2em] text-faint sm:text-sm">
           {String(positionsCount).padStart(2, '0')} POSITIONS · {String(records.length).padStart(2, '0')} RECORDS ·{' '}
           {yearSpan[0]} — {yearSpan.at(-1)}

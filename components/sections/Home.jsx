@@ -28,27 +28,36 @@ export default function Home() {
   const gridColumns = featured.map((_, i) => (i === hovered ? '2fr' : '1fr')).join(' ')
 
   return (
-    <section id="home" className="flex h-[calc(100vh-4rem)] w-full flex-col overflow-hidden p-4 sm:p-6">
+    <section
+      id="home"
+      className="flex h-[calc(100vh-4rem)] w-full flex-col overflow-hidden px-5 py-8 sm:px-8 sm:py-10 lg:px-14"
+    >
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
-        className="card flex w-full flex-1 flex-col p-8 sm:p-12"
+        className="flex w-full flex-1 flex-col"
       >
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6 sm:pb-8">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-5xl">Hongsong Choi</h1>
-            <p className="mt-4 text-sm text-muted sm:text-base">Game Developer</p>
-            <p className="mt-1 font-mono text-xs text-faint sm:text-sm">Unity/Unreal, Client/Server, Infra, CI/CD</p>
+            <span className="eyebrow self-start text-sm sm:text-base">GAME DEVELOPER</span>
+            <h1 className="display mt-4 text-[32px] sm:text-[44px] lg:text-[64px]">Hongsong Choi</h1>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted sm:text-base">
+              Unity와 Unreal을 오가며 성능 최적화와 아키텍처 설계에 집중하는 클라이언트 프로그래머입니다. 코드
+              한 줄부터 배포 파이프라인까지, 게임이 더 안정적으로 완성되는 과정을 만드는 걸 지향합니다.
+            </p>
+            <p className="mt-3 font-mono text-xs tracking-[0.2em] text-faint sm:text-sm">
+              UNITY / UNREAL · CLIENT / SERVER · INFRA · CI/CD
+            </p>
           </div>
 
           <Link href="/projects" className="text-sm text-muted transition-colors hover:text-ink sm:text-base">
-            See all projects
+            See all projects →
           </Link>
         </div>
 
         <div
-          className="mt-10 grid flex-1 grid-cols-1 gap-3 transition-[grid-template-columns] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:gap-4 sm:[grid-template-columns:var(--cols)]"
+          className="mt-6 grid flex-1 grid-cols-1 gap-3 transition-[grid-template-columns] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:gap-4 sm:[grid-template-columns:var(--cols)]"
           style={{ '--cols': gridColumns }}
         >
           {featured.map((p, i) => (
@@ -57,7 +66,7 @@ export default function Home() {
               href="/projects"
               onMouseEnter={() => handleEnter(i)}
               onMouseLeave={handleLeave}
-              className="card flex flex-col justify-between overflow-hidden p-6 transition-colors hover:bg-subtle sm:p-10"
+              className="card shadow-soft flex flex-col justify-between overflow-hidden p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-subtle hover:shadow-lift sm:p-10"
             >
               <span className="index-num">{String(i + 1).padStart(2, '0')}</span>
               <span>

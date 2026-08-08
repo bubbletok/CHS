@@ -4,34 +4,29 @@ import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-/** 첫 화면 — 스크롤(휠/터치/키보드)하면 다른 화면들처럼 라우터로 /home 으로 넘어간다 */
+const AUTO_DELAY = 1250
+
+/** 첫 화면 — 스크롤 없이, 잠시 보여준 뒤 자동으로 /home 으로 넘어간다. 기다리기 싫으면 클릭/키로 바로 스킵 가능 */
 export default function Splash() {
   const router = useRouter()
   const navigated = useRef(false)
 
   useEffect(() => {
+    // 전환 시점엔 이미 컴파일/로드가 끝나 있도록, 화면 진입 즉시 다음 라우트를 미리 준비해둔다
+    router.prefetch('/home')
+
     const goHome = () => {
       if (navigated.current) return
       navigated.current = true
       router.push('/home')
     }
 
-    const onWheel = (e) => e.deltaY > 24 && goHome()
-    let touchStartY = 0
-    const onTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY
-    }
-    const onTouchMove = (e) => touchStartY - e.touches[0].clientY > 24 && goHome()
-    const onKey = (e) => ['ArrowDown', 'PageDown', ' '].includes(e.key) && goHome()
-
-    window.addEventListener('wheel', onWheel, { passive: true })
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: true })
+    const timer = setTimeout(goHome, AUTO_DELAY)
+    const onKey = (e) => ['Enter', ' ', 'ArrowDown'].includes(e.key) && goHome()
     window.addEventListener('keydown', onKey)
+
     return () => {
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove', onTouchMove)
+      clearTimeout(timer)
       window.removeEventListener('keydown', onKey)
     }
   }, [router])
@@ -49,13 +44,16 @@ export default function Splash() {
 
       <motion.button
         type="button"
-        onClick={() => router.push('/home')}
+        onClick={() => {
+          if (navigated.current) return
+          navigated.current = true
+          router.push('/home')
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.7 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
         className="flex flex-col items-center gap-2"
       >
-        <span className="index-num">SCROLL</span>
         <motion.span
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}

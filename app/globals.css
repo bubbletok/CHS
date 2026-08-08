@@ -132,6 +132,13 @@
     @apply font-mono text-xs tracking-[0.2em] text-faint;
   }
 
+  /* 히어로 타이틀 — 페이지마다 반복되던 clamp 한 벌 대신, 확실히 큰 스케일 + 타이트한 자간으로
+     타이포 자체가 시선을 끄는 지점을 만든다. 화면 폭에 맞춰 최대치까지 과감하게 키운다 */
+  .display {
+    @apply font-bold leading-[0.86] tracking-[-0.035em] text-ink;
+    font-size: clamp(3rem, 4vw + 2rem, 7.5rem);
+  }
+
   /* 은은한 마우스 추적 스포트라이트 — CursorSpotlight.jsx가 --spot-x/--spot-y를 갱신한다 */
   .cursor-spotlight {
     @apply pointer-events-none fixed inset-0 z-[1] opacity-0 transition-opacity duration-500;

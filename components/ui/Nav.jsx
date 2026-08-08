@@ -49,7 +49,7 @@ export default function Nav() {
       }`}
     >
       <div className="flex h-16 w-full items-center justify-between gap-4 px-5 sm:px-8">
-        <Link href="/home" className="font-mono text-[15px] font-bold tracking-tight text-ink">
+        <Link href="/home" className="font-mono text-base font-bold tracking-[-0.01em] text-ink">
           Do, Whatever
         </Link>
 
