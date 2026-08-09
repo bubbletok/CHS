@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Reveal from '@/components/ui/Reveal'
 import { achievementGroups } from '@/data/achievements'
@@ -145,7 +145,7 @@ function ExperienceTrack() {
                     {r.stack.map((s) => (
                       <span
                         key={s}
-                        className="rounded-full border border-line px-3 py-1.5 text-sm font-medium text-ink"
+                        className="border border-line px-3 py-1.5 text-sm font-medium text-ink"
                       >
                         {s}
                       </span>
@@ -167,6 +167,7 @@ function ExperienceTrack() {
 function PersonalTrack() {
   // 클릭하면 세부 내용을 모달로 띄운다 — ProjectsSection의 상세 모달과 같은 패턴
   const [active, setActive] = useState(null)
+  const trackRef = useRef(null)
 
   useEffect(() => {
     if (!active) return
@@ -175,10 +176,23 @@ function PersonalTrack() {
     return () => window.removeEventListener('keydown', onKey)
   }, [active])
 
+  // overflow-x-auto는 기본적으로 마우스 휠(세로 스크롤)에 반응하지 않아 직접 변환해준다
+  useEffect(() => {
+    const el = trackRef.current
+    if (!el) return
+    const onWheel = (e) => {
+      if (e.deltaY === 0) return
+      el.scrollLeft += e.deltaY
+      e.preventDefault()
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [])
+
   return (
     <div>
       {/* 연도 구역을 가로로 나란히 두고, 구역 사이는 세로선으로 끊는다. 전체가 옆으로 스크롤된다 */}
-      <div className="overflow-x-auto pb-2">
+      <div ref={trackRef} className="overflow-x-auto pb-2">
         <div className="flex items-start">
           {yearGroups.map((yg, gi) => (
             <div key={yg.year} className={`shrink-0${gi > 0 ? ' ml-10 border-l border-line pl-10 sm:ml-14 sm:pl-14' : ''}`}>
@@ -196,7 +210,8 @@ function PersonalTrack() {
                       type="button"
                       onClick={() => setActive(r)}
                       aria-haspopup="dialog"
-                      className="group w-full pr-4 text-left"
+                      disabled={!r.detail}
+                      className={`group w-full pr-4 text-left ${r.detail ? 'cursor-pointer' : 'cursor-default'}`}
                     >
                       <span className="flex items-center gap-2">
                         <Stamp group={r.group} accent={r.accent} title={r.title} />
@@ -205,10 +220,16 @@ function PersonalTrack() {
                         )}
                       </span>
                       <p className="mt-1.5 flex items-baseline gap-1.5 text-sm font-semibold leading-snug text-ink">
-                        {r.title}
-                        {/* 클릭 가능 표시 — 상세가 있는 항목에만, 과하지 않게 옅은 + 기호로 */}
+                        <span
+                          className={r.detail ? 'underline decoration-line decoration-1 underline-offset-4 transition-colors group-hover:decoration-ink' : ''}
+                        >
+                          {r.title}
+                        </span>
+                        {/* 클릭 가능 표시 — 상세가 있는 항목에만, 테두리 있는 배지로 눈에 띄게 */}
                         {r.detail && (
-                          <span className="text-xs font-normal text-faint transition-colors group-hover:text-muted">+</span>
+                          <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-line text-[10px] leading-none text-muted transition-colors group-hover:border-ink group-hover:text-ink">
+                            +
+                          </span>
                         )}
                       </p>
                     </button>
@@ -305,7 +326,7 @@ export default function ActivitiesSection() {
   const [tab, setTab] = useState('experience')
 
   return (
-    <section className="w-full px-5 pb-28 pt-14 sm:px-8 sm:pt-20 lg:px-14">
+    <section className="w-full break-keep px-5 pb-28 pt-14 sm:px-8 sm:pt-20 lg:px-14">
       <header className="border-b border-line pb-10">
         <span className="eyebrow">ACTIVITIES</span>
         <h2 className="display mt-5 text-[44px] sm:text-[72px] lg:text-[96px]">Activities</h2>
@@ -342,7 +363,7 @@ export default function ActivitiesSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.15 }}
           className="mt-12"
         >
           {tab === 'experience' ? <ExperienceTrack /> : <PersonalTrack />}

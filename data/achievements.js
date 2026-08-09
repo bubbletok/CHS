@@ -55,8 +55,8 @@ export const achievementGroups = [
     label: '전시 출품',
     accent: 'red',
     items: [
-      { period: '2024.11', title: '2024 G-STAR', detail: 'Dead Line' },
-      { period: '2023.11', title: '2023 G-STAR', detail: 'Fallen Knight' },
+      { period: '2024.11', title: '2024 G-STAR', detail: 'Dead Line · 한국IT직업전문학교 X 경희대학교 연합' },
+      { period: '2023.11', title: '2023 G-STAR', detail: 'Fallen Knight · 한국IT직업전문학교 X 경희대학교 연합' },
     ],
   },
 ]
