@@ -24,7 +24,7 @@ stack:
 poster: /Projects/폴더명/포스터.png   # 없으면 생략, 자동으로 색 플레이스홀더 카드가 된다
 shots:
   - /Projects/폴더명/스샷1.jpg
-links: {}                # 또는 play: https://... 처럼
+links: {}                # play: https://... / video: https://youtu.be/... 처럼. 유튜브 링크는 버튼 대신 자동으로 임베드된다
 ```
 
 `status`가 `company`면 카드 그리드에서 "COMPANY" 뱃지로 따로 묶여 보인다.

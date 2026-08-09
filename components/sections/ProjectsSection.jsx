@@ -288,7 +288,7 @@ function ProjectDetails({ active }) {
   )
 }
 
-/** "Projects Section" — Company/Personal 탭 + 엔진 세부 탭(전환 시 페이드) + 스크롤 연동 카드 캐스케이드. 섹션 자체도 가로를 최대한 넓게 쓴다 */
+/** "Projects Section" — Company/Personal 탭 + 엔진 세부 탭, 카드는 홈과 같은 3열 그리드로 편다 */
 export default function ProjectsSection({ projects }) {
   const [tab, setTab] = useState('company')
   const [engine, setEngine] = useState('all')

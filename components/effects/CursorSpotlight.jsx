@@ -3,11 +3,7 @@
 import { useEffect, useRef } from 'react'
 import usePrefersReducedMotion from '@/lib/usePrefersReducedMotion'
 
-/**
- * 마우스를 따라다니는 은은한 radial-gradient 스포트라이트.
- * WebGL 없이 CSS 커스텀 프로퍼티만 rAF로 갱신하는 가벼운 장식 효과 —
- * 이전 버전의 상시 렌더링 R3F 배경을 대체한다.
- */
+/** 마우스를 따라다니는 은은한 radial-gradient 스포트라이트. CSS 커스텀 프로퍼티를 rAF로 갱신할 뿐인 가벼운 장식 효과 */
 export default function CursorSpotlight() {
   const ref = useRef(null)
   const reducedMotion = usePrefersReducedMotion()
