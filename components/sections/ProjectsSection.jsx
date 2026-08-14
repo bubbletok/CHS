@@ -106,6 +106,48 @@ function CardBody({ item }) {
   )
 }
 
+/** 문단 텍스트 중 [텍스트](URL)는 새 탭 링크로, `코드`는 인라인 코드로, **강조**는 볼드로 바꾼다. 그 외 마크다운 문법은 처리하지 않는다 */
+function renderInline(text) {
+  const pattern = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|`([^`]+)`|\*\*([^*]+)\*\*/g
+  const parts = []
+  let last = 0
+  let match
+  while ((match = pattern.exec(text))) {
+    if (match.index > last) parts.push(text.slice(last, match.index))
+    if (match[3] !== undefined) {
+      parts.push(
+        <code
+          key={match.index}
+          className="rounded-sm border border-line/60 bg-line/30 px-1 py-0.5 font-mono text-[0.9em] text-ink"
+        >
+          {match[3]}
+        </code>
+      )
+    } else if (match[4] !== undefined) {
+      parts.push(
+        <strong key={match.index} className="font-bold text-ink">
+          {match[4]}
+        </strong>
+      )
+    } else {
+      parts.push(
+        <a
+          key={match.index}
+          href={match[2]}
+          target="_blank"
+          rel="noreferrer"
+          className="underline underline-offset-2 hover:text-ink"
+        >
+          {match[1]} ↗
+        </a>
+      )
+    }
+    last = pattern.lastIndex
+  }
+  if (last < text.length) parts.push(text.slice(last))
+  return parts
+}
+
 /** 긴 본문을 빈 줄 기준으로 문단 나눠 렌더 — 한 덩어리 텍스트보다 시인성이 낫다. 줄 길이도 가독 폭으로 제한한다 */
 function Paragraphs({ text, className = '' }) {
   const paras = text.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
@@ -113,7 +155,7 @@ function Paragraphs({ text, className = '' }) {
     <div className="max-w-[68ch] space-y-3">
       {paras.map((p, i) => (
         <p key={i} className={className}>
-          {p}
+          {renderInline(p)}
         </p>
       ))}
     </div>
@@ -184,14 +226,13 @@ function ShotsGallery({ shots }) {
   )
 }
 
-/** 문제점 한 항목 — 접혀 있다가 클릭하면 본문(+스크린샷)이 펼쳐진다 */
-function ProblemItem({ problem }) {
-  const [open, setOpen] = useState(false)
+/** 문제점 한 항목 — 접혀 있다가 클릭하면 본문(+스크린샷)이 펼쳐진다. 열림 상태는 부모가 관리해 한 번에 하나만 펼쳐지게 한다 */
+function ProblemItem({ problem, open, onToggle }) {
   return (
     <div className="border-b border-line/40 pb-3">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={onToggle}
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-4 py-1 text-left"
       >
@@ -231,6 +272,7 @@ function ProblemItem({ problem }) {
 
 /** 상세 모달의 텍스트 블록 — 이미지가 있으면 오른쪽 컬럼에, 없으면 모달 전체 폭에 그대로 쓴다 */
 function ProjectDetails({ active }) {
+  const [openTitle, setOpenTitle] = useState(null)
   return (
     <div>
       {Object.keys(active.meta ?? {}).length > 0 && (
@@ -262,7 +304,12 @@ function ProjectDetails({ active }) {
       {active.problems.length > 0 && (
         <div className="mt-8 space-y-3">
           {active.problems.map((p) => (
-            <ProblemItem key={p.title} problem={p} />
+            <ProblemItem
+              key={p.title}
+              problem={p}
+              open={openTitle === p.title}
+              onToggle={() => setOpenTitle((t) => (t === p.title ? null : p.title))}
+            />
           ))}
         </div>
       )}
@@ -275,6 +322,15 @@ function ProjectDetails({ active }) {
             </li>
           ))}
         </ul>
+      )}
+
+      {active.future && (
+        <div className="mt-8">
+          <h4 className="text-sm font-bold text-ink sm:text-base">향후 계획</h4>
+          <div className="mt-2">
+            <Paragraphs text={active.future} className="text-sm leading-relaxed text-muted sm:text-base" />
+          </div>
+        </div>
       )}
 
       <div className="mt-8 flex flex-wrap gap-2.5">
@@ -404,11 +460,11 @@ export default function ProjectsSection({ projects }) {
                 </div>
 
                 {/* 오른쪽 — 설명 */}
-                <ProjectDetails active={active} />
+                <ProjectDetails key={active.id} active={active} />
               </div>
             ) : (
               <div className="mt-8">
-                <ProjectDetails active={active} />
+                <ProjectDetails key={active.id} active={active} />
                 <div className="mt-8 flex flex-col gap-4">
                   <MediaLinks links={active.links} />
                 </div>
