@@ -25,7 +25,7 @@ export default function Reveal({ children, delay = 0, className = '', as: Tag = 
           observer.disconnect()
         }
       },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
+      { rootMargin: '0px 0px 15% 0px', threshold: 0 }
     )
 
     observer.observe(el)

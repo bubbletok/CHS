@@ -90,7 +90,8 @@ function CardBody({ item }) {
           홈 화면 카드와 같은 크롭(object-cover)이라 레터박스 없이 큼직하게 찬다 */}
       {item.poster ? (
         <div className="my-6 flex flex-1 items-center justify-center overflow-hidden rounded">
-          <img src={item.poster} alt="" className="h-full w-3/5 object-cover object-top" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- 원본 비율 그대로 표시해야 해서 고정 크기가 필요한 next/image fill과 맞지 않는다 */}
+          <img src={item.poster} alt={item.title} className="h-full w-3/5 object-cover object-top" />
         </div>
       ) : (
         <div className="flex-1" />
@@ -135,7 +136,7 @@ function renderInline(text) {
           key={match.index}
           href={match[2]}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="underline underline-offset-2 hover:text-ink"
         >
           {match[1]} ↗
@@ -191,7 +192,7 @@ function MediaLinks({ links }) {
       {rest.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {rest.map(([k, href]) => (
-            <a key={k} href={href} target="_blank" rel="noreferrer" className="btn-ghost">
+            <a key={k} href={href} target="_blank" rel="noopener noreferrer" className="btn-ghost">
               {k} ↗
             </a>
           ))}
@@ -202,7 +203,7 @@ function MediaLinks({ links }) {
 }
 
 /** 스크린샷 가로 갤러리 — overflow-x-auto는 기본적으로 마우스 휠(세로 스크롤)에 반응하지 않아 직접 변환해준다 */
-function ShotsGallery({ shots }) {
+function ShotsGallery({ shots, title }) {
   const trackRef = useRef(null)
 
   useEffect(() => {
@@ -219,8 +220,14 @@ function ShotsGallery({ shots }) {
 
   return (
     <div ref={trackRef} className="flex gap-3 overflow-x-auto pb-2">
-      {shots.map((src) => (
-        <img key={src} src={src} alt="" className="h-72 w-auto shrink-0 rounded object-contain sm:h-96" />
+      {shots.map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element -- 고정 높이·가변 폭(원본 비율 유지) 갤러리라 next/image의 fill/고정 크기 모델과 맞지 않는다
+        <img
+          key={src}
+          src={src}
+          alt={`${title} 스크린샷 ${i + 1}`}
+          className="h-72 w-auto shrink-0 rounded object-contain sm:h-96"
+        />
       ))}
     </div>
   )
@@ -255,8 +262,14 @@ function ProblemItem({ problem, open, onToggle }) {
           >
             {problem.images?.length > 0 && (
               <div className={`mt-3 grid gap-3 ${problem.images.length > 1 ? 'grid-cols-2' : ''}`}>
-                {problem.images.map((src) => (
-                  <img key={src} src={src} alt="" className="w-full rounded-lg object-cover" />
+                {problem.images.map((src, i) => (
+                  // eslint-disable-next-line @next/next/no-img-element -- 원본 비율 그대로 표시해야 해서 고정 크기가 필요한 next/image fill과 맞지 않는다
+                  <img
+                    key={src}
+                    src={src}
+                    alt={`${problem.title} 스크린샷 ${i + 1}`}
+                    className="w-full rounded-lg object-cover"
+                  />
                 ))}
               </div>
             )}
@@ -449,13 +462,14 @@ export default function ProjectsSection({ projects }) {
                 {/* 왼쪽 — 이미지 / 영상 */}
                 <div className="flex flex-col gap-4">
                   {active.poster && (
+                    // eslint-disable-next-line @next/next/no-img-element -- 원본 비율 그대로 표시해야 해서 고정 크기가 필요한 next/image fill과 맞지 않는다
                     <img
                       src={active.poster}
-                      alt=""
+                      alt={active.title}
                       className="max-h-[32rem] w-full rounded-lg object-contain"
                     />
                   )}
-                  {active.shots?.length > 0 && <ShotsGallery shots={active.shots} />}
+                  {active.shots?.length > 0 && <ShotsGallery shots={active.shots} title={active.title} />}
                   <MediaLinks links={active.links} />
                 </div>
 

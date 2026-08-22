@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { contacts } from '@/data/profile'
 
 /** "기본 홈 화면" — 좌측 정렬 타이틀 + 우측 "See all projects" + 프로젝트 카드 3장.
  * 화면(뷰포트)을 최대한 꽉 채우는 하나의 큰 테두리 박스로 구성한다. 카드는 균등한 3분할 그리드, hover는 살짝 뜨는 정도로만 강조한다.
@@ -47,7 +48,8 @@ export default function Home({ featured }) {
 
               {p.poster ? (
                 <span className="my-6 flex flex-1 items-center justify-center overflow-hidden rounded">
-                  <img src={p.poster} alt="" className="h-full w-3/5 object-cover object-top" />
+                  {/* eslint-disable-next-line @next/next/no-img-element -- 원본 비율 그대로 표시해야 해서 고정 크기가 필요한 next/image fill과 맞지 않는다 */}
+                  <img src={p.poster} alt={p.title} className="h-full w-3/5 object-cover object-top" />
                 </span>
               ) : (
                 <span className="flex-1" />
@@ -58,6 +60,20 @@ export default function Home({ featured }) {
                 <span className="mt-2 block text-xs text-faint sm:text-sm">{p.subtitle}</span>
               </span>
             </Link>
+          ))}
+        </div>
+
+        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-line pt-6 font-mono text-xs uppercase tracking-[0.15em] text-faint sm:text-sm">
+          {contacts.map((c) => (
+            <a
+              key={c.label}
+              href={c.href}
+              target={c.href.startsWith('http') ? '_blank' : undefined}
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-ink"
+            >
+              {c.label} <span className="normal-case tracking-normal text-muted">{c.value}</span>
+            </a>
           ))}
         </div>
       </motion.div>

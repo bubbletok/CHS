@@ -38,8 +38,8 @@ module.exports = {
       },
       fontFamily: {
         // 헤드라인은 개성 있는 지오메트릭 디스플레이, 라벨/UI는 IBM Plex Mono
-        sans: ['Space Grotesk', 'Noto Sans KR', 'system-ui', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'monospace'],
+        sans: ['var(--font-space-grotesk)', 'var(--font-noto-sans-kr)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-ibm-plex-mono)', 'monospace'],
       },
       boxShadow: {
         // 네온 글로우 대신 얕고 절제된 확산 그림자 — 입체감은 주로 hairline 보더가 담당한다
