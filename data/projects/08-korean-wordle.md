@@ -5,11 +5,10 @@ status: playable
 title: 한글 워들
 tab: 한글 워들
 subtitle: 한국어 Wordle · Google Play 출시
-pitch: 1인 개발 | 8개월 | 누적 다운로드 200+
+pitch: 1인 개발 | 누적 다운로드 200+
 badge: Google Play
 meta:
   역할: 1인 개발 (지속 개발 중)
-  기간: 8개월
   기술 스택: Unity / C#, Android, Unity Test Framework
 stack:
   - Unity
