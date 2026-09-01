@@ -25,6 +25,7 @@ poster: /Projects/DeadLine/DeadLine_Poster.png
 links:
   video: https://youtu.be/4zzC391a3jE?si=HbP9bM97PVpMf6qg
   video2: https://www.youtube.com/watch?v=opwSqmBIpBo&feature=youtu.be
+  github: https://github.com/bubbletok/DeadLine_Source
 ---
 
 ## 요약
