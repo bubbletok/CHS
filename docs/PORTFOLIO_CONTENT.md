@@ -130,7 +130,7 @@ Git-SVN 하이브리드 협업 구조를 1인으로 설계 · 구축했다.
 
 - **역할**: 몬스터 AI 프로그래밍 (BT · BB · AI Perception)
 - **기간**: 2023.09 ~ 2023.11
-- **멤버**: 7명 (기획 3, 프로그래밍 3)
+- **멤버**: 6명 (기획 3, 프로그래밍 3)
 - **스택**: Unreal 5, Blueprint, Behavior Tree / Black Board, AI Perception, IK Retargeter, Animation Notify
 - **이미지**:
   - `/Projects/FallenKnight/Fallen_Knight_Poster_.png`

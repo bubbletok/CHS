@@ -9,7 +9,7 @@ pitch: 소울라이크 | 한국IT직업전문학교 X 경희대학교 | 2023 G-S
 badge: 2023 G-STAR
 meta:
   기간: 2023.09 ~ 2023.11
-  멤버: 7명 (기획 3, 프로그래밍 3)
+  멤버: 6명 (기획 3, 프로그래밍 3)
   역할: 몬스터 AI
   기술 스택: Unreal 5.0 / Blueprint, Git, Azure DevOps
 stack:
