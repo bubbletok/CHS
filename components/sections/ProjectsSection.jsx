@@ -202,8 +202,23 @@ function MediaLinks({ links }) {
   )
 }
 
+/** 클릭한 이미지를 화면 전체 팝업으로 확대. 모달(z-[55])보다 위에 뜬다 */
+function Lightbox({ src, alt, onClose }) {
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4 sm:p-8"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element -- 원본 비율 그대로 확대 표시 */}
+      <img src={src} alt={alt} className="max-h-full max-w-full object-contain" />
+    </div>
+  )
+}
+
 /** 스크린샷 가로 갤러리 — overflow-x-auto는 기본적으로 마우스 휠(세로 스크롤)에 반응하지 않아 직접 변환해준다 */
-function ShotsGallery({ shots, title }) {
+function ShotsGallery({ shots, title, onZoom }) {
   const trackRef = useRef(null)
 
   useEffect(() => {
@@ -226,7 +241,8 @@ function ShotsGallery({ shots, title }) {
           key={src}
           src={src}
           alt={`${title} 스크린샷 ${i + 1}`}
-          className="h-72 w-auto shrink-0 rounded object-contain sm:h-96"
+          onClick={() => onZoom(src)}
+          className="h-72 w-auto shrink-0 cursor-zoom-in rounded object-contain sm:h-96"
         />
       ))}
     </div>
@@ -234,7 +250,7 @@ function ShotsGallery({ shots, title }) {
 }
 
 /** 문제점 한 항목 — 접혀 있다가 클릭하면 본문(+스크린샷)이 펼쳐진다. 열림 상태는 부모가 관리해 한 번에 하나만 펼쳐지게 한다 */
-function ProblemItem({ problem, open, onToggle }) {
+function ProblemItem({ problem, open, onToggle, onZoom }) {
   return (
     <div className="border-b border-line/40 pb-3">
       <button
@@ -268,7 +284,8 @@ function ProblemItem({ problem, open, onToggle }) {
                     key={src}
                     src={src}
                     alt={`${problem.title} 스크린샷 ${i + 1}`}
-                    className="w-full rounded-lg object-cover"
+                    onClick={() => onZoom(src)}
+                    className="w-full cursor-zoom-in rounded-lg object-cover"
                   />
                 ))}
               </div>
@@ -284,7 +301,7 @@ function ProblemItem({ problem, open, onToggle }) {
 }
 
 /** 상세 모달의 텍스트 블록 — 이미지가 있으면 오른쪽 컬럼에, 없으면 모달 전체 폭에 그대로 쓴다 */
-function ProjectDetails({ active }) {
+function ProjectDetails({ active, onZoom }) {
   const [openTitle, setOpenTitle] = useState(null)
   return (
     <div>
@@ -322,6 +339,7 @@ function ProjectDetails({ active }) {
               problem={p}
               open={openTitle === p.title}
               onToggle={() => setOpenTitle((t) => (t === p.title ? null : p.title))}
+              onZoom={onZoom}
             />
           ))}
         </div>
@@ -362,6 +380,7 @@ export default function ProjectsSection({ projects }) {
   const [tab, setTab] = useState('company')
   const [engine, setEngine] = useState('all')
   const [active, setActive] = useState(null)
+  const [zoom, setZoom] = useState(null)
   const tabItems = projects.filter((p) => p.bucket === tab)
   const items = tabItems.filter((p) => engine === 'all' || p.engine === engine)
 
@@ -378,10 +397,10 @@ export default function ProjectsSection({ projects }) {
 
   useEffect(() => {
     if (!active) return
-    const onKey = (e) => e.key === 'Escape' && setActive(null)
+    const onKey = (e) => e.key === 'Escape' && (zoom ? setZoom(null) : setActive(null))
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [active])
+  }, [active, zoom])
 
   // 큰 탭을 바꾸면 세부 탭은 전체로 되돌린다 — 이전 엔진 필터가 남아 빈 화면이 뜨는 걸 막는다
   const changeTab = (key) => {
@@ -466,19 +485,22 @@ export default function ProjectsSection({ projects }) {
                     <img
                       src={active.poster}
                       alt={active.title}
-                      className="max-h-[32rem] w-full rounded-lg object-contain"
+                      onClick={() => setZoom(active.poster)}
+                      className="max-h-[32rem] w-full cursor-zoom-in rounded-lg object-contain"
                     />
                   )}
-                  {active.shots?.length > 0 && <ShotsGallery shots={active.shots} title={active.title} />}
+                  {active.shots?.length > 0 && (
+                    <ShotsGallery shots={active.shots} title={active.title} onZoom={setZoom} />
+                  )}
                   <MediaLinks links={active.links} />
                 </div>
 
                 {/* 오른쪽 — 설명 */}
-                <ProjectDetails key={active.id} active={active} />
+                <ProjectDetails key={active.id} active={active} onZoom={setZoom} />
               </div>
             ) : (
               <div className="mt-8">
-                <ProjectDetails key={active.id} active={active} />
+                <ProjectDetails key={active.id} active={active} onZoom={setZoom} />
                 <div className="mt-8 flex flex-col gap-4">
                   <MediaLinks links={active.links} />
                 </div>
@@ -492,6 +514,8 @@ export default function ProjectsSection({ projects }) {
           </div>
         </div>
       )}
+
+      {zoom && <Lightbox src={zoom} alt={active?.title ?? ''} onClose={() => setZoom(null)} />}
     </section>
   )
 }
