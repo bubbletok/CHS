@@ -4,22 +4,21 @@
 export const experience = [
   {
     company: 'MetaMotionX Inc.',
-    period: '2025.09 – 현재',
+    period: '2025.10 – 현재',
     roles: [
       {
         role: '정규직 · 클라이언트 프로그래머',
         period: '2025.10 – 현재',
-        summary: '카메라 렌더링 최적화 · 무기 시스템 아키텍처 · 멀티스레드 처리 등을 담당하며 클라이언트 개발 전 영역을 주도',
+        summary: '카메라 렌더링 최적화 · 멀티스레드 처리 등 클라이언트 개발을 담당',
         stack: ['Unity', 'Unreal 5', 'C++', 'Job System', 'Netcode for GameObjects'],
         points: [
-          '카메라 8대 개별 렌더링을 전방 2대·후방 2대 재배치 + 비동기 렌더링으로 전환해 FPS 10 → 40, GC 할당 최적화로 프레임 부하 최소화',
-          '발사기 · 발사체 · 무기 책임을 분리한 인터페이스 기반 무기 시스템 아키텍처로 재설계, 오브젝트 풀링 적용',
+          '카메라 8대 개별 렌더링을 화각 104도 4대 + 쉐이더 블렌딩 재배치, 비동기 렌더링·센서별 스케줄링으로 전환해 FPS +20~30 개선, 라이다 PCD Burst 병렬화로 FPS +5 개선',
           'IJob / IJobParallelFor 기반 물리 연산 병렬화 및 비동기 스레드 분리',
         ],
       },
       {
         role: '사내 개발 인프라 구축 · DevOps 1인 단독',
-        period: '2025.09 – 2026.06',
+        period: '2025.10 – 현재',
         summary: '형상 관리부터 CI/CD까지 개발 인프라를 단독으로 설계 · 구축',
         stack: ['Jenkins', 'Docker', 'GitLab', 'Git-SVN'],
         points: [
@@ -37,8 +36,8 @@ export const experience = [
       {
         role: '계약직 · 클라이언트 프로그래머',
         period: '2024.09 – 2025.09',
-        summary: '실시간 멀티 에이전트 시뮬레이터의 경로 계획 · UI 아키텍처 · 센서 시뮬레이션 개발',
-        stack: ['Unity', 'Unreal 5', 'C++', 'DOTween'],
+        summary: '시뮬레이터의 경로 계획 · UI 아키텍처 · 센서 시뮬레이션 개발',
+        stack: ['Unity', 'Unreal 5', 'C++', 'DOTween', 'Netcode for GameObjects'],
         points: [
           'Reeds-Shepp Curve 기반 A* 알고리즘으로 차량 경로 계획 구현',
           'MVP 패턴과 이벤트 기반 상태 관리로 UI 아키텍처 설계, DOTween으로 트랜지션 구현',
@@ -54,8 +53,8 @@ export const experience = [
       {
         role: '인턴 · Unity 클라이언트',
         period: '2024.07 – 2024.08',
-        summary: 'Netcode for GameObjects 기반 실시간 시뮬레이터의 클라이언트 · UI 개발',
-        stack: ['Unity', 'Netcode for GameObjects', 'Doxygen'],
+        summary: '실시간 시뮬레이터의 클라이언트 · UI 개발',
+        stack: ['Unity', 'Doxygen'],
         points: [
           '동적 드롭다운 메뉴 등 커스텀 UI 컴포넌트 설계 및 구현',
           '소프트웨어 설계서(SDD) 작성',

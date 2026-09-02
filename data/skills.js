@@ -41,6 +41,6 @@ export const familiar = [
   },
   {
     label: 'AI',
-    detail: 'DQN, LLM 멀티 에이전트 (LangChain / FastAPI)',
+    detail: 'DQN, LLM 멀티 에이전트 (LangChain / FastAPI), Claude Code planner/implementer/validator 역할 분리로 AI 구현 속도와 코드 검증 병행',
   },
 ]
