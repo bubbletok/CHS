@@ -12,7 +12,7 @@ export const experience = [
         summary: '카메라 렌더링 최적화 · 멀티스레드 처리 등을 담당하며 클라이언트 개발 전 영역을 주도',
         stack: ['Unity', 'Unreal 5', 'C++', 'Job System', 'Netcode for GameObjects'],
         points: [
-          '카메라 8대 개별 렌더링을 화각 104도 4대 + 쉐이더 블렌딩 재배치, 비동기 렌더링·센서별 스케줄링으로 전환해 FPS 20~30 개선, 라이다 PCD Burst 병렬화로 센서 풀가동 5FPS를 10FPS로 개선',
+          '카메라 8대 개별 렌더링을 화각 104도 4대 + 쉐이더 블렌딩 재배치, 비동기 렌더링·센서별 스케줄링으로 전환해 FPS +20~30 개선, 라이다 PCD Burst 병렬화로 FPS +5 개선',
           'IJob / IJobParallelFor 기반 물리 연산 병렬화 및 비동기 스레드 분리',
         ],
       },
