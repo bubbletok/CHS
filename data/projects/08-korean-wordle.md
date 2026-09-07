@@ -25,6 +25,7 @@ shots:
   - /Projects/KoreanWordle/KW_v1.0.5_InGameScreenshot_6.jpg
 links:
   play: https://play.google.com/store/apps/details?id=com.CHS.Korean_Wordle
+  github: https://github.com/bubbletok/KoreanWordle
 ---
 
 ## 요약
