@@ -7,7 +7,7 @@ tab: Project C
 subtitle: DevOps 및 Infra 구축
 meta:
   기간: 2025.10 – 현재
-  구축: 1인 (협의: 개발팀·디자인팀)
+  구축: 1인 (협의 - 개발팀·디자인팀)
   역할: DevOps / 인프라 구축
   기술 스택: Docker / GitLab / Jenkins CI/CD
 stack:
