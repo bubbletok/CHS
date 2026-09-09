@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import { Space_Grotesk, IBM_Plex_Mono, Noto_Sans_KR } from 'next/font/google'
 import './globals.css'
 import CursorSpotlight from '@/components/effects/CursorSpotlight'
@@ -57,6 +58,7 @@ export default function RootLayout({ children }) {
           {children}
         </div>
         <Loader />
+        <Analytics />
       </body>
     </html>
   )
